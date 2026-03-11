@@ -2,6 +2,7 @@ import React from 'react';
 import { Menu, Scissors, Bell } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Notificacao, Tab } from '../types';
+import { useAuth } from '../contexts/AuthContext';
 
 interface HeaderProps {
   setIsMobileMenuOpen: (isOpen: boolean) => void;
@@ -22,6 +23,10 @@ export default function Header({
   notificacoes,
   handleTabClick
 }: HeaderProps) {
+  const { user } = useAuth();
+  const initial = user?.email ? user.email.charAt(0).toUpperCase() : 'U';
+  const displayName = user?.email ? user.email.split('@')[0] : 'Usuário';
+
   return (
     <header className="h-16 bg-white border-b border-neutral-200 flex items-center justify-between px-4 md:px-8 shrink-0 z-30">
       <div className="flex items-center gap-3 md:hidden">
@@ -104,10 +109,10 @@ export default function Header({
           className="flex items-center gap-3 cursor-pointer hover:opacity-80 transition-opacity"
         >
           <div className="w-8 h-8 rounded-full bg-neutral-900 text-white flex items-center justify-center text-[12px] font-medium">
-            ML
+            {initial}
           </div>
           <span className="text-[14px] font-medium text-neutral-700 hidden md:block">
-            Matheus
+            {displayName}
           </span>
         </div>
       </div>

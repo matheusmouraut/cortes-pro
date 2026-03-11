@@ -7,8 +7,12 @@ import Toast from './components/Toast';
 import Studio from './components/Studio';
 import History from './components/History';
 import Profile from './components/Profile';
+import Auth from './components/Auth';
+import { useAuth } from './contexts/AuthContext';
 
 export default function App() {
+  const { session, loading: authLoading } = useAuth();
+  
   const [activeTab, setActiveTab] = useState<Tab>('estudio');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [url, setUrl] = useState('');
@@ -107,6 +111,14 @@ export default function App() {
     setActiveTab(tab);
     setIsMobileMenuOpen(false);
   };
+
+  if (authLoading) {
+    return <div className="flex h-screen w-full items-center justify-center bg-[#FAFAFA]"><div className="w-8 h-8 animate-spin rounded-full border-4 border-neutral-200 border-t-neutral-900"></div></div>;
+  }
+
+  if (!session) {
+    return <Auth />;
+  }
 
   return (
     <div className="flex h-screen bg-[#FAFAFA] text-neutral-900 font-sans selection:bg-neutral-200 overflow-hidden">
